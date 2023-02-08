@@ -1,0 +1,167 @@
+groups:
+
+- name: PrometheusRules
+
+  rules:
+
+    - alert: TargetDown
+      expr: up == 0
+      for: 0m
+      labels:
+        severity: critical
+      annotations:
+        summary: Target down (Instance:{{ $labels.instance }})
+        description: "Target Down"
+
+    - alert: PrometheusConfigurationReloadFailure
+      expr: prometheus_config_last_reload_successful != 1
+      for: 0m
+      labels:
+        severity: warning
+      annotations:
+        summary: Prometheus configuration reload failure (instance {{ $labels.instance }})
+        description: "Prometheus configuration reload failure"
+
+    - alert: PrometheusNotConnectedToAlertmanager
+      expr: prometheus_notifications_alertmanagers_discovered < 1
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: Prometheus not connected to alertmanager (instance {{ $labels.instance }})
+        description: "Prometheus cannot connect a active alertmanager within 5 minutes"
+
+    - alert: PrometheusNotificationsDropped
+      expr: increase(prometheus_notifications_dropped_total[5m]) > 0
+      for: 0m
+      labels:
+        severity: warning
+      annotations:
+        summary: Prometheus notifications dropped（Instance:{{ $labels.instance }}）
+        description: "Prometheus dropped about {{  $value }}  notifications within 5 minutes"
+
+    - alert: PrometheusNotificationsBacklog
+      expr: min_over_time(prometheus_notifications_queue_length[5m]) > 0
+      for: 0m
+      labels:
+        severity: warning
+      annotations:
+        summary: Prometheus notifications backlog (Instance:{{ $labels.instance }})
+        description: "Prometheus has a backlog of about {{ $value }}  notifications within 5 minutes"
+
+    - alert: PrometheusNotReady
+      expr: prometheus_ready != 1
+      for: 0m
+      labels:
+        severity: warning
+      annotations:
+        summary: Prometheus not ready (Instance:{{ $labels.instance }})
+        description: "Prometheus not ready"
+
+    - alert: PrometheusRuleEvaluationFailed
+      expr: increase(prometheus_rule_evaluation_failures_total[5m]) > 0
+      for: 0m
+      labels:
+        severity: warning
+      annotations:
+        summary: Prometheus rule evaluation failed (Instance:{{ $labels.instance }})
+        description: "Prometheus rule evaluation failed about {{ $value }} times within 5 minutes"
+
+    - alert: PrometheusTemplateTextExpansionFailed
+      expr: increase(prometheus_rule_evaluation_failures_total[5m]) > 0
+      for: 0m
+      labels:
+        severity: warning
+      annotations:
+        summary: Prometheus template text expansion failed (Instance:{{ $labels.instance }})
+        description: "Prometheus template text expansion failed about {{ $value }} times within 5 minutes"
+
+    - alert: PrometheusRuleGroupEvaluationSlow
+      expr: prometheus_rule_group_last_duration_seconds > prometheus_rule_group_interval_seconds
+      for: 0m
+      labels:
+        severity: warning
+      annotations:
+        summary: Prometheus rule group evaluation slow (Instance:{{ $labels.instance }})
+        description: "The evaluation time of rule group({{ $labels.rule_group }}) is too long,value:{{ $value }}"
+
+    - alert: PrometheusScrapesSamplesRejected
+      expr: increase(prometheus_target_scrapes_sample_duplicate_timestamp_total[5m]) > 0
+      for: 0m
+      labels:
+        severity: warning
+      annotations:
+        summary: Prometheus scrapes samples regected (Instance:{{ $labels.instance }})
+        description: " The number of samples rejected is about {{ $value }} within 5 minutes"
+  
+    - alert: PrometheusTsdbCheckpointCreationsFailed
+      expr: increase(prometheus_tsdb_checkpoint_creations_failed_total[5m]) > 0
+      for: 0m
+      labels:
+        severity: critical
+      annotations:
+        summary: Prometheus tsdb checkpoint creations failed (Instance:{{ $labels.instance }})
+        description: "Prometheus tsdb has {{ $value }} checkpoint creations failure within 5 minutes"
+
+    - alert: PrometheusTsdbCheckpointDeletionsFailed
+      expr: increase(prometheus_tsdb_checkpoint_deletions_failed_total[5m]) > 0
+      for: 0m
+      labels:
+        severity: critical
+      annotations:
+        summary: Prometheus tsdb checkpoint deletions failed (Instance:{{ $labels.instance }})
+        description: "Prometheus tsdb has {{ $value }} checkpoint deletions failure within 5 minutes"
+
+    - alert: PrometheusTsdbCompactionsFailed
+      expr: increase(prometheus_tsdb_compactions_failed_total[5m]) > 0
+      for: 0m
+      labels:
+        severity: critical
+      annotations:
+        summary: Prometheus tsdb compactions failed (Instance:{{ $labels.instance }})
+        description: "Prometheus tsdb has {{ $value }} compactions failure within 5 minutes"
+
+    - alert: PrometheusTsdbHeadTruncationsFailed
+      expr: increase(prometheus_tsdb_head_truncations_failed_total[5m]) > 0
+      for: 0m
+      labels:
+        severity: critical
+      annotations:
+        summary: Prometheus tsdb head truncations failed (Instance:{{ $labels.instance }})
+        description: "Prometheus tsdb has {{ $value }} head truncations failure within 5 minutes"
+
+    - alert: PrometheusTsdbReloadsFailed
+      expr: increase(prometheus_tsdb_reloads_failures_total[5m]) > 0
+      for: 0m
+      labels:
+        severity: critical
+      annotations:
+        summary: Prometheus tsdb reloads  failed (Instance:{{ $labels.instance }})
+        description: "Prometheus tsdb has {{ $value }} reloads failure within 5 minutes"
+
+    - alert: PrometheusTsdbWalTruncationsFailed
+      expr: increase(prometheus_tsdb_wal_truncations_failed_total[5m]) > 0
+      for: 0m
+      labels:
+        severity: critical
+      annotations:
+        summary: Prometheus tsdb wal truncations failed (Instance:{{ $labels.instance }})
+        description: "Prometheus tsdb has {{ $value }} wal truncations failure within 5 minutes"
+
+    - alert: PrometheusTsdbWalCorruptions
+      expr: increase(prometheus_tsdb_wal_corruptions_total[5m]) > 0
+      for: 0m
+      labels:
+        severity: critical
+      annotations:
+        summary: Prometheus tsdb wal corruptions (Instance:{{ $labels.instance }})
+        description: "Prometheus tsdb has {{ $value }} wal corruptions within 5 minutes"
+
+    - alert: AlertManagerConfigReloadFailure
+      expr: alertmanager_config_last_reload_successfull != 1
+      for: 0m
+      labels:
+        severity: warning
+      annotations:
+        summary: AlertManager configuration reload failure (instance {{ $labels.instance }})
+        description: "AlertManager configuration reload failure"

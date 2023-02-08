@@ -1,0 +1,16 @@
+{
+    "name": "noAlert",
+    "short_name": "noAlert",
+    "description": "Not only Alert",
+    "start_url": "/index.html",
+    "display": "standalone",
+    "background_color": "#fff",
+    "theme_color": "#3eaf7c",
+    "icons": [
+      {
+        "src": "/images/icon.svg",
+        "type": "image/png"
+      }
+    ]
+  }
+  
