@@ -9,7 +9,7 @@ wget https://raw.githubusercontent.com/guaguafrog/prometheus-alert-rules/main/al
 ```
 
 ## ◆ NodeContextSwitchHigh  
-**Description**
+**Description**   
 Alert when the average number of context switches per core is high.
 This threshold is related to the application the environment is running on.
 Please adjust according to system operation when use.
@@ -30,7 +30,7 @@ Please adjust according to system operation when use.
 ```
 
 ## ◆ NodeCpuLoadHigh  
-**Description**
+**Description**   
 Alert when CPU core load is high. 
 The load of each core instead of the average of the CPU cores.
 
@@ -38,6 +38,7 @@ The load of each core instead of the average of the CPU cores.
 - "node_cpu_seconds_total{mode="idle"}": Seconds the CPUs spent in idle mode.   
   
 **Alert rules**   
+```
   - alert: NodeCpuLoadHigh
       expr: 100 - avg by(instance)(rate(node_cpu_seconds_total{mode="idle"}[5m]))*100 > 70
       for: 0m
@@ -46,9 +47,10 @@ The load of each core instead of the average of the CPU cores.
       annotations:
         summary: Node cpu load high (Instance:{{ $labels.instance }})
         description: "Node cpu load more than 70% within 5 minutes,value: {{ $labels.value }}%"
+```
 
 ## ◆ NodeCpuIowaitHigh  
-**Description**
+**Description**   
 Alert when CPU core iowait is high.     
 The iowait of each core instead of the average of the CPU cores.   
 High iowait may mean that the hard disk or network is busy.
@@ -69,7 +71,7 @@ High iowait may mean that the hard disk or network is busy.
 ```
 
 ## ◆ NodeDisksMissing  
-**Description**
+**Description**   
 Alarm when the number of hard disks is less than the threshold.
 This alarm rule is often used in scenarios with multiple hard disks such as storage clusters.
 Please modify the threshold when using.
@@ -90,7 +92,7 @@ Please modify the threshold when using.
 ```
 
 ## ◆ NodeDisksIOHigh 
-**Description**
+**Description**   
 Please modify the threshold when using.
 
 **Metric**   
@@ -272,7 +274,7 @@ Alert when the file system is predicted to be full.
         severity: warning
       annotations:
         summary: Node network transmit_errs (Instance:{{ $labels.instance }})
-        description: "Node network({{ $labels.device }}) have {{ printf \"%.0f\" $labels.value }} transmit_errs within 5 minutus"
+        description: "Node network({{ $labels.device }}) have {{  printf \"%.0f\" $labels.value }} transmit_errs within 5 minutus"
 ```   
 
 ## ◆ NodeNetworkTransmitDrop  
@@ -385,4 +387,4 @@ Alert when the file system is predicted to be full.
       annotations:
         summary: Node time offset high (Instance:{{ $labels.instance }})
         description: "The time offset exceeds 0.1s within 5 minutes,value:{{ printf \"%.3f\" $labels.value }}s "
-``` 
+```    
