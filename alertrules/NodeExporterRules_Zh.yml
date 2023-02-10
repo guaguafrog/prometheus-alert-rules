@@ -22,7 +22,7 @@ groups:
         summary: 节点CPU负载高 (Instance:{{ $labels.instance }})
         description: "5分钟内CPU负载超过70%,value: {{ $labels.value }}%"
 
-    - alert: NodeCpuLoadHigh
+    - alert: NodeCpuIowaitHigh
       expr: rate(node_cpu_seconds_total{mode="iowait"}[5m])*100 > 5
       for: 0m
       labels:
@@ -181,11 +181,11 @@ groups:
       labels:
         severity: warning
       annotations:
-        summary:节点网设备络接收速率高(Instance:{{ $labels.instance }})
-        description: "网络设备({{ $labels.device }}) 接收速率超过80MB/s,value:{{ $labels.value }}%"
+        summary: 节点网设备络接收速率高(Instance:{{ $labels.instance }})
+        description: "网络设备({{ $labels.device }}) 接收速率超过80MB/s,value:{{ $labels.value }}MB/s"
 
     - alert: NodeClockSyncFailed
-      expr: node_timex_sync_status = 0
+      expr: node_timex_sync_status != 1
       for: 5m
       labels:
         severity: warning
@@ -194,10 +194,10 @@ groups:
         description: "节点时钟同步失败"
 
     - alert: NodeTimeOffsetHigh
-      expr: abs(node_timex_offset_seconds) = 0.1
+      expr: abs(node_timex_offset_seconds) > 0.1
       for: 5m
       labels:
         severity: warning
       annotations:
-        summary: Node time offset high (Instance:{{ $labels.instance }})
-        description: "The time offset exceeds 0.1s within 5 minutes,value:{{ printf \"%.3f\" $labels.value }}s "
+        summary: 节点时间偏移高 (Instance:{{ $labels.instance }})
+        description: "节点时间偏移量超过0.1s,value:{{ printf \"%.3f\" $labels.value }}s "

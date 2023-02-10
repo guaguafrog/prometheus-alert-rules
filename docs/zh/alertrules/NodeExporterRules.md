@@ -83,7 +83,7 @@ wget https://raw.githubusercontent.com/guaguafrog/prometheus-alert-rules/main/al
   
 **告警规则**   
 ```
-    - alert: NodeCpuLoadHigh
+    - alert: NodeCpuIowaitHigh
       expr: rate(node_cpu_seconds_total{mode="iowait"}[5m])*100 > 5
       for: 0m
       labels:
@@ -93,7 +93,7 @@ wget https://raw.githubusercontent.com/guaguafrog/prometheus-alert-rules/main/al
         description: "5分钟内节点CPU(core:{{ $labels.cpu }}) iowait 超过5%,value: {{ $labels.value }}%"
 ```
 ```En
-    - alert: NodeCpuLoadHigh
+    - alert: NodeCpuIowaitHigh
       expr: rate(node_cpu_seconds_total{mode="iowait"}[5m])*100 > 5
       for: 0m
       labels:
@@ -545,8 +545,8 @@ wget https://raw.githubusercontent.com/guaguafrog/prometheus-alert-rules/main/al
       labels:
         severity: warning
       annotations:
-        summary:节点网设备络接收速率高(Instance:{{ $labels.instance }})
-        description: "网络设备({{ $labels.device }}) 接收速率超过80MB/s,value:{{ $labels.value }}%"
+        summary: 节点网设备络接收速率高(Instance:{{ $labels.instance }})
+        description: "网络设备({{ $labels.device }}) 接收速率超过80MB/s,value:{{ $labels.value }}MB/s"
 ``` 
 ```
     - alert: NodeNetworkReceiveRateHigh
@@ -566,7 +566,7 @@ wget https://raw.githubusercontent.com/guaguafrog/prometheus-alert-rules/main/al
 **告警规则**   
 ```
     - alert: NodeClockSyncFailed
-      expr: node_timex_sync_status = 0
+      expr: node_timex_sync_status != 1
       for: 5m
       labels:
         severity: warning
@@ -576,7 +576,7 @@ wget https://raw.githubusercontent.com/guaguafrog/prometheus-alert-rules/main/al
 ``` 
 ```
     - alert: NodeClockSyncFailed
-      expr: node_timex_sync_status = 0
+      expr: node_timex_sync_status != 1
       for: 5m
       labels:
         severity: warning
@@ -592,7 +592,7 @@ wget https://raw.githubusercontent.com/guaguafrog/prometheus-alert-rules/main/al
 **告警规则**   
 ```
     - alert: NodeTimeOffsetHigh
-      expr: abs(node_timex_offset_seconds) = 0.1
+      expr: abs(node_timex_offset_seconds) > 0.1
       for: 5m
       labels:
         severity: warning
@@ -602,7 +602,7 @@ wget https://raw.githubusercontent.com/guaguafrog/prometheus-alert-rules/main/al
 ``` 
 ```
     - alert: NodeTimeOffsetHigh
-      expr: abs(node_timex_offset_seconds) = 0.1
+      expr: abs(node_timex_offset_seconds) > 0.1
       for: 5m
       labels:
         severity: warning

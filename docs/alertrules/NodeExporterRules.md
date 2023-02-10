@@ -60,7 +60,7 @@ High iowait may mean that the hard disk or network is busy.
   
 **Alert rules**   
 ```
-    - alert: NodeCpuLoadHigh
+    - alert: NodeCpuIowaitHigh
       expr: rate(node_cpu_seconds_total{mode="iowait"}[5m])*100 > 5
       for: 0m
       labels:
@@ -364,7 +364,7 @@ Alert when the file system is predicted to be full.
 **Alert rules**   
 ```
     - alert: NodeClockSyncFailed
-      expr: node_timex_sync_status = 0
+      expr: node_timex_sync_status != 1
       for: 5m
       labels:
         severity: warning
@@ -380,7 +380,7 @@ Alert when the file system is predicted to be full.
 **Alert rules**   
 ```
     - alert: NodeTimeOffsetHigh
-      expr: abs(node_timex_offset_seconds) = 0.1
+      expr: abs(node_timex_offset_seconds) > 0.1
       for: 5m
       labels:
         severity: warning

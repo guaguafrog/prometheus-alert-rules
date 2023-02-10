@@ -22,16 +22,8 @@ groups:
         summary: Node cpu load high (Instance:{{ $labels.instance }})
         description: "Node cpu load more than 70% within 5 minutes,value: {{ $labels.value }}%"
 
-    - alert: NodeLoad1High
-      expr: node_load1 > 70
-      for: 5m
-      labels:
-        severity: warning
-      annotations:
-        summary: Node CPU load 1 high (Instance:{{ $labels.instance }})
-        description: "Node CPU load 1 is more than 70% within 5 minutes，value:{{ $labels.value }}%"
 
-    - alert: NodeCpuLoadHigh
+    - alert: NodeCpuIowaitHigh
       expr: rate(node_cpu_seconds_total{mode="iowait"}[5m])*100 > 5
       for: 0m
       labels:
@@ -194,7 +186,7 @@ groups:
         description: "The receiving rate of network({{ $labels.device }}) exceeds 80MB/s within 5 minutes,value:{{ $labels.value }}MB/s"
 
     - alert: NodeClockSyncFailed
-      expr: node_timex_sync_status = 0
+      expr: node_timex_sync_status != 1
       for: 5m
       labels:
         severity: warning
@@ -203,7 +195,7 @@ groups:
         description: "Node clock sync failed (Instance:{{ $labels.instance }})"
 
     - alert: NodeTimeOffsetHigh
-      expr: abs(node_timex_offset_seconds) = 0.1
+      expr: abs(node_timex_offset_seconds) > 0.1
       for: 5m
       labels:
         severity: warning
