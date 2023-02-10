@@ -1,0 +1,203 @@
+groups:
+
+- name: NodeRules
+
+  rules:
+
+    - alert: NodeContextSwitchingHigh
+      expr: rate(node_context_switches_total[5m])/count without(mode,cpu) (node_cpu_seconds_total{mode="idle"}) > 2000
+      for: 0m
+      labels:
+        severity: warning
+      annotations:
+        summary: 节点CPU上下文切换高 (Instance:{{ $labels.instance }})
+        description: "5分钟内平均每核心的上下文切换数超过,value: {{ $labels.value }}"
+
+    - alert: NodeCpuLoadHigh
+      expr: 100 - avg by(instance)(rate(node_cpu_seconds_total{mode="idle"}[5m]))*100 > 70
+      for: 0m
+      labels:
+        severity: warning
+      annotations:
+        summary: 节点CPU负载高 (Instance:{{ $labels.instance }})
+        description: "5分钟内CPU负载超过70%,value: {{ $labels.value }}%"
+
+    - alert: NodeCpuLoadHigh
+      expr: rate(node_cpu_seconds_total{mode="iowait"}[5m])*100 > 5
+      for: 0m
+      labels:
+        severity: warning
+      annotations:
+        summary: 节点CPU iowait高 (Instance:{{ $labels.instance }})
+        description: "5分钟内节点CPU(core:{{ $labels.cpu }}) iowait 超过5%,value: {{ $labels.value }}%"
+
+    - alert: NodeDisksMissing
+      expr: count without(device) (node_disk_io_now{device=~"sd.*"}) < 1
+      for: 0m
+      labels:
+        severity: warning
+      annotations:
+        summary: 节点硬盘丢失 (Instance:{{ $labels.instance }})
+        description: "节点上的硬盘数小于 1，value: {{ $labels.value }}"
+
+    - alert: NodeDisksIOHigh
+      expr: node_disk_io_now > 50
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: 硬盘 I/O 高(Instance:{{ $labels.instance }})
+        description: "持续5分钟硬盘({{ $labels.device }})实时IO超过50,value:{{ $labels.value }}"
+
+    - alert: NodeDiskReadRateHigh
+      expr: rate(node_disk_read_bytes_total[5m])/1024/1024 > 50
+      for: 0m
+      labels:
+        severity: warning
+      annotations:
+        summary: 硬盘读速率高 (Instance:{{ $labels.instance }})
+        description: "5分钟内硬盘({{ $labels.device }})读速率超过50MB/s,value:{{ $labels.value }}MB/s"
+
+    - alert: NodeDiskWrittenRateHigh
+      expr: rate(node_disk_written_bytes_total[5m])/1024/1024 > 50
+      for: 0m
+      labels:
+        severity: warning
+      annotations:
+        summary: 硬盘写速率高 (Instance:{{ $labels.instance }})
+        description: "5分钟内硬盘({{ $labels.device }})写速率超过50MB/s,value:{{ $labels.value }}MB/s"
+
+    - alert: NodeFilesystemFull
+      expr: 100 - node_filesystem_free_bytes{mountpoint!~"/boot.*|/run.*"}/node_filesystem_size_bytes*100 > 80
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: 文件系统使用率高 (Instance:{{ $labels.instance }})
+        description: "文件系统(mountpoint:{{ $labels.mountpoint }})使用率超过80%，value: {{ $labels.value }}%"
+
+    - alert: NodeFilesystemWillFull
+      expr: 100 - predict_linear(node_filesystem_free_bytes[24h], 7*24*3600)/node_filesystem_size_bytes*100 > 100
+      for: 0m
+      labels:
+        severity: info
+      annotations:
+        summary: 文件系统即将写满 (Instance:{{ $labels.instance }})
+        description: "预测7天内文件系统(mountpoint:{{ $labels.mountpoint }})将写满，value: {{ $labels.value }}%"
+
+    - alert: NodeFilesystemReadonly
+      expr: node_filesystem_readonly != 0
+      for: 0m
+      labels:
+        severity: critical
+      annotations:
+        summary: 文件系统只读状态 (Instance:{{ $labels.instance }})
+        description: "文件系统(mountpoint:{{ $labels.mountpoint }})只读状态"
+
+    - alert: NodeFilesystemDeviceError
+      expr: node_filesystem_device_error != 0
+      for: 0m
+      labels:
+        severity: critical
+      annotations:
+        summary: 获取设备的统计信息时发生错误(Instance:{{ $labels.instance }})
+        description: "获取设备({{ $labels.mountpoint }})的统计信息时发生错误"
+
+    - alert: NodeInodeUsageHigh
+      expr: 100 - node_filesystem_files_free/node_filesystem_files*100 > 80
+      for: 0m
+      labels:
+        severity: warning
+      annotations:
+        summary: 节点Inode使用率高(Instance:{{ $labels.instance }})
+        description: "节点(filesystem:{{ $labels.mountpoint }}) Inode使用率超过 80%，value: {{ $labels.value }}%"
+
+    - alert: NodeMemoryUsageHigh
+      expr: 100- node_memory_MemAvailable_bytes/node_memory_MemTotal_bytes*100 > 70
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: 节点内存使用率高 (Instance:{{ $labels.instance }})
+        description: "节点持续5分钟内存使用率超过70%，value:{{ $labels.value }}%"
+
+    - alert: NodeSwapMemoryUsageHigh
+      expr: 100 - node_memory_SwapFree_bytes/node_memory_SwapTotal_bytes*100 > 70
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: 节点交换内存使用率高 (Instance:{{ $labels.instance }})
+        description: "节点持续5分钟交换内存使用率超过70%，value:{{ $labels.value }}%"
+
+    - alert: NodeNetworkTransmitErr
+      expr: rate(node_network_transmit_errs_total[5m]) > 0
+      for: 0m
+      labels:
+        severity: warning
+      annotations:
+        summary: 节点网络设备发送包错误 (Instance:{{ $labels.instance }})
+        description: "5分钟内网络设备({{ $labels.device }})大约{{ printf \"%.0f\" $labels.value }}个发送包错误"
+
+    - alert: NodeNetworkTransmitdrop
+      expr: rate(node_network_transmit_drop_total[5m]) > 0
+      for: 0m
+      labels:
+        severity: warning
+      annotations:
+        summary: 节点网络设备发送丢包 (Instance:{{ $labels.instance }})
+        description: "5分钟内网络({{ $labels.device }})大约{{ printf \"%.0f\" $labels.value }}个发送包丢弃"
+
+    - alert: NodeNetworkTransmitRateHigh
+      expr: rate(node_network_transmit_bytes_total{device!="lo"}[5m])/1024/1024 > 80
+      for: 0m
+      labels:
+        severity: warning
+      annotations:
+        summary: 节点网设备络发送速率高(Instance:{{ $labels.instance }})
+        description: "网络设备({{ $labels.device }}) 发送速率超过80MB/s,value:{{ $labels.value }}%"
+
+    - alert: NodeNetworkReceiveErr
+      expr: rate(node_network_receive_errs_total[5m]) > 0
+      for: 0m
+      labels:
+        severity: warning
+      annotations:
+        summary: 节点网络设备接收包错误 (Instance:{{ $labels.instance }})
+        description: "5分钟内网络设备({{ $labels.device }})大约{{ printf \"%.0f\" $labels.value }}个接收包错误"
+
+    - alert: NodeNetworkReceivedrop
+      expr: rate(node_network_receive_drop_total[5m]) > 0
+      for: 0m
+      labels:
+        severity: warning
+      annotations:
+        summary: 节点网络设备接收丢包(Instance:{{ $labels.instance }})
+        description: "5分钟内网络设备({{ $labels.device }})大约{{ printf \"%.0f\" $labels.value }}个接收包丢弃"
+
+    - alert: NodeNetworkReceiveRateHigh
+      expr: rate(node_network_receive_bytes_total{device!="lo"}[5m])/1024/1024 > 80
+      for: 0m
+      labels:
+        severity: warning
+      annotations:
+        summary:节点网设备络接收速率高(Instance:{{ $labels.instance }})
+        description: "网络设备({{ $labels.device }}) 接收速率超过80MB/s,value:{{ $labels.value }}%"
+
+    - alert: NodeClockSyncFailed
+      expr: node_timex_sync_status = 0
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: 节点时钟同步失败(Instance:{{ $labels.instance }})
+        description: "节点时钟同步失败"
+
+    - alert: NodeTimeOffsetHigh
+      expr: abs(node_timex_offset_seconds) = 0.1
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: Node time offset high (Instance:{{ $labels.instance }})
+        description: "The time offset exceeds 0.1s within 5 minutes,value:{{ printf \"%.3f\" $labels.value }}s "

@@ -8,7 +8,7 @@ Alert rules designed based on  Prometheus's metrics.
 wget https://raw.githubusercontent.com/guaguafrog/prometheus-alert-rules/main/alertrules/PrometheusSelfRules.yml
 ```
 
-## 1. TargetDown  
+## ◆ TargetDown  
 **Metrics**   
 - "up": It is used to determine whether the target (configured in Prometheus) is online.(0:offline,1:online)   
 
@@ -25,7 +25,7 @@ wget https://raw.githubusercontent.com/guaguafrog/prometheus-alert-rules/main/al
 ```   
 > Note: This rule applies to all targets configured in prometheus, not only prometheus itself.
 
-## 2. PrometheusConfigReloadFailed
+## ◆ PrometheusConfigReloadFailed
 **Metrics**   
 - "prometheus_config_last_reload_successful": Whether the last configuration reload attempt was successful. 
 
@@ -41,7 +41,7 @@ wget https://raw.githubusercontent.com/guaguafrog/prometheus-alert-rules/main/al
         description: "Prometheus configuration reload failure"
 ```
 
-## 3. PrometheusNotConnectedToAlertmanager
+## ◆ PrometheusNotConnectedToAlertmanager
 
 **Metrics**   
 - "prometheus_notifications_alertmanagers_discovered": The number of alertmanagers discovered and active.   
@@ -58,7 +58,7 @@ wget https://raw.githubusercontent.com/guaguafrog/prometheus-alert-rules/main/al
         description: "Prometheus cannot connect a active alertmanager within 5 minutes"
 ```
 
-## 4. PrometheusNotificationsDropped
+## ◆ PrometheusNotificationsDropped
 **Metrics**   
 - "prometheus_notifications_dropped_total": Total number of alerts dropped due to errors when sending to Alertmanager. 
 
@@ -74,7 +74,7 @@ wget https://raw.githubusercontent.com/guaguafrog/prometheus-alert-rules/main/al
         description: "Prometheus dropped about {{  $value }}  notifications within 5 minutes"
 ```   
 
-## 5. PrometheusNotificationsBacklog
+## ◆ PrometheusNotificationsBacklog
 **Metrics**   
 - "prometheus_notifications_queue_length": The number of alert notifications in the queue.
 
@@ -89,7 +89,7 @@ wget https://raw.githubusercontent.com/guaguafrog/prometheus-alert-rules/main/al
         summary: Prometheus notifications backlog (Instance:{{ $labels.instance }})
         description: "Prometheus has a backlog of about {{ $value }}  notifications within 5 minutes"
 ``` 
-## 6. PrometheusNotReady
+## ◆ PrometheusNotReady
 **Metrics**   
 - "prometheus_ready": Whether Prometheus startup was fully completed and the server is ready for normal operation.
 
@@ -105,7 +105,7 @@ wget https://raw.githubusercontent.com/guaguafrog/prometheus-alert-rules/main/al
         description: "Prometheus not ready"
 ``` 
 
-## 7. PrometheusRuleEvaluationFailed
+## ◆ PrometheusRuleEvaluationFailed
 **Metrics**   
 - "prometheus_rule_evaluation_failures_total": The total number of rule evaluation failures.
 
@@ -120,7 +120,7 @@ wget https://raw.githubusercontent.com/guaguafrog/prometheus-alert-rules/main/al
         summary: Prometheus rule evaluation failed (Instance:{{ $labels.instance }})
         description: "Prometheus rule evaluation failed about {{ $value }} times within 5 minutes"
 ``` 
-## 8. PrometheusTemplateTextExpansionFailed
+## ◆ PrometheusTemplateTextExpansionFailed
 **Metrics**   
 - "prometheus_template_text_expansion_failures_total": The total number of template text expansion failures.
 
@@ -136,7 +136,7 @@ wget https://raw.githubusercontent.com/guaguafrog/prometheus-alert-rules/main/al
         description: "Prometheus template text expansion failed about {{ $value }} times within 5 minutes"
 ```   
 
-## 9. PrometheusRuleGroupEvaluationSlow
+## ◆ PrometheusRuleGroupEvaluationSlow
 **Metrics**   
 - "prometheus_rule_group_last_duration_seconds": The duration of the last rule group evaluation.  
 - "prometheus_rule_group_interval_seconds": The interval of a rule group.
@@ -153,7 +153,7 @@ wget https://raw.githubusercontent.com/guaguafrog/prometheus-alert-rules/main/al
         description: "The evaluation time of rule group({{ $labels.rule_group }}) is too long, value:{{ $value }}"
 ```   
 
-## 10. PrometheusScrapesSamplesRejected
+## ◆ PrometheusScrapesSamplesRejected
 **Metrics**   
 - "prometheus_target_scrapes_sample_duplicate_timestamp_total": Total number of samples rejected due to duplicate timestamps but different values. 
 
@@ -169,7 +169,7 @@ wget https://raw.githubusercontent.com/guaguafrog/prometheus-alert-rules/main/al
         description: " The number of samples rejected is about {{ $value }} within 5 minutes"
 ```  
 
-## 11. PrometheusTsdbCheckpointCreationsFailed
+## ◆ PrometheusTsdbCheckpointCreationsFailed
 **Metrics**   
 - "prometheus_tsdb_checkpoint_creations_failed_total": Total number of checkpoint creations that failed.
 
@@ -185,7 +185,7 @@ wget https://raw.githubusercontent.com/guaguafrog/prometheus-alert-rules/main/al
         description: "Prometheus tsdb has {{ $value }} checkpoint creations failure within 5 minutes"
 ```   
 
-## 12. PrometheusTsdbCheckpointDeletionsFailed
+## ◆ PrometheusTsdbCheckpointDeletionsFailed
 **Metrics**   
 - "prometheus_tsdb_checkpoint_deletions_failed_total": Total number of checkpoint deletions that failed. 
 
@@ -201,7 +201,7 @@ wget https://raw.githubusercontent.com/guaguafrog/prometheus-alert-rules/main/al
         description: "Prometheus tsdb has {{ $value }} checkpoint deletions failure within 5 minutes"
 ```   
 
-## 13. PrometheusTsdbCompactionsFailed
+## ◆ PrometheusTsdbCompactionsFailed
 **Metrics**   
 - "prometheus_tsdb_compactions_failed_total": Total number of compactions that failed for the partition. 
   
@@ -218,7 +218,7 @@ wget https://raw.githubusercontent.com/guaguafrog/prometheus-alert-rules/main/al
         description: "Prometheus tsdb has {{ $value }} compactions failure within 5 minutes"
 ```   
 
-## 14. PrometheusTsdbHeadTruncationsFailed
+## ◆ PrometheusTsdbHeadTruncationsFailed
 **Metrics**   
 - "prometheus_tsdb_head_truncations_failed_total": Total number of head truncations that failed.
 
@@ -234,7 +234,7 @@ wget https://raw.githubusercontent.com/guaguafrog/prometheus-alert-rules/main/al
         description: "Prometheus tsdb has {{ $value }} head truncations failure within 5 minutes"
 ```   
 
-## 15. PrometheusTsdbReloadsFailed
+## ◆ PrometheusTsdbReloadsFailed
 **Metrics**   
 - "prometheus_tsdb_reloads_failures_total": Number of times the database failed to reload block data from disk.  
 
@@ -250,7 +250,7 @@ wget https://raw.githubusercontent.com/guaguafrog/prometheus-alert-rules/main/al
         description: "Prometheus tsdb has {{ $value }} reloads failure within 5 minutes"
 ```   
 
-## 16. PrometheusTsdbWalTruncationsFailed
+## ◆ PrometheusTsdbWalTruncationsFailed
 **Metrics**   
 - "prometheus_tsdb_wal_truncations_failed_total": Total number of write log truncations that failed.
   
@@ -265,7 +265,7 @@ wget https://raw.githubusercontent.com/guaguafrog/prometheus-alert-rules/main/al
         summary: Prometheus tsdb wal truncations failed (Instance:{{ $labels.instance }})
         description: "Prometheus tsdb has {{ $value }} wal truncations failure within 5 minutes"
 ```   
-## 17. PrometheusTsdbWalCorruptions
+## ◆ PrometheusTsdbWalCorruptions
 **Metrics**   
 - "prometheus_tsdb_wal_corruptions_total": Total number of WAL corruptions. 
 
@@ -281,7 +281,7 @@ wget https://raw.githubusercontent.com/guaguafrog/prometheus-alert-rules/main/al
         description: "Prometheus tsdb has {{ $value }} wal corruptions within 5 minutes"
 ```  
 
-## 18. AlertManagerConfigReloadFailed
+## ◆ AlertManagerConfigReloadFailed
 **Metrics**   
 - "prometheus_config_last_reload_successful": Whether the last configuration reload attempt was successful. 
 

@@ -7,7 +7,10 @@ export const navbarEn: NavbarConfig = [
   },
   {
     text: 'Alert Rules',
-    children: ['/alertrules/PrometheusSelfRules.md', '/alertrules/NodeExporterRules.md'],
+    children: [
+      '/alertrules/PrometheusSelfRules.md',
+      '/alertrules/NodeExporterRules.md',
+    ],
   },
   {
     text: 'noAlert',

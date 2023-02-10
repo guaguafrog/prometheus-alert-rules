@@ -11,7 +11,7 @@ wget https://raw.githubusercontent.com/guaguafrog/prometheus-alert-rules/main/al
 wget https://raw.githubusercontent.com/guaguafrog/prometheus-alert-rules/main/alertrules/NodeExporterRules.yml
 ```
 
-## 1. 监控目标丢失  
+## ◆ 监控目标丢失  
 **描述**  
 Target无法连接时产生告警 
 
@@ -26,7 +26,7 @@ Target无法连接时产生告警
       labels:
         severity: critical
       annotations:
-        summary: 监控目标（Target）丢失(实例:{{ $labels.instance }})
+        summary: 监控目标（Target）丢失(Instance:{{ $labels.instance }})
         description: "监控目标丢失"
 ```
 ```En
@@ -41,7 +41,7 @@ Target无法连接时产生告警
 ```
 > 注： 此规则作用于prometheus中配置的所有的监控目标(target)，不仅仅是prometheus自身。
 
-## 2. Prometheus配置文件重载失败
+## ◆ Prometheus配置文件重载失败
 **描述**  
 Prometheus具有热加载配置文件的功能，无需重启prometheus服务。当配置文件重新加载失败时产生告警。 
 > 注： 从 Prometheus2.0 开始，热加载功能是默认关闭的，如需开启，需要在启动 Prometheus 的时候，添加 --web.enable-lifecycle 参数。
@@ -71,7 +71,7 @@ Prometheus具有热加载配置文件的功能，无需重启prometheus服务。
         description: "Prometheus configuration reload failure"
 ```
 
-## 3. Prometheus未连接到Alertmanager
+## ◆ Prometheus未连接到Alertmanager
 **描述**  
 没有配置AlertManager，或配置的AlertManager服务未运行，导致Prometheus无法连接到AlertManager服务。
 
@@ -101,7 +101,7 @@ Prometheus具有热加载配置文件的功能，无需重启prometheus服务。
 ```
 > 注：若Prometheus无需连接AlertManager，请删除此条告警规则。
 
-## 4. Prometheus告警通知被丢弃
+## ◆ Prometheus告警通知被丢弃
 **描述**  
 由Prometheus发送给AlertManager的告警通知，由于错误被丢弃。比如AlertManager服务异常，导致无可用的AlertManager可接收告警通知。
 
@@ -130,7 +130,7 @@ Prometheus具有热加载配置文件的功能，无需重启prometheus服务。
         description: "Prometheus dropped about {{  $value }}  notifications within 5 minutes"
 ```   
 
-## 5. Prometheus告警通知积压
+## ◆ Prometheus告警通知积压
 **描述**  
 由Prometheus向AlertManager发送告警通知出现积压。
 
@@ -158,7 +158,7 @@ Prometheus具有热加载配置文件的功能，无需重启prometheus服务。
         summary: Prometheus notifications backlog (Instance:{{ $labels.instance }})
         description: "Prometheus has a backlog of about {{ $value }}  notifications within 5 minutes"
 ``` 
-## 6. Prometheus运行异常
+## ◆ Prometheus运行异常
 **描述**  
 Promehteus是否启动完成，服务是否运行正常。
 
@@ -187,7 +187,7 @@ Promehteus是否启动完成，服务是否运行正常。
         description: "Prometheus not ready"
 ``` 
 
-## 7. Prometheus规则评估失败
+## ◆ Prometheus规则评估失败
 **描述**  
 Promehteus的告警规则评估失败。
 
@@ -215,7 +215,7 @@ Promehteus的告警规则评估失败。
         summary: Prometheus rule evaluation failed (Instance:{{ $labels.instance }})
         description: "Prometheus rule evaluation failed about {{ $value }} times within 5 minutes"
 ``` 
-## 8. Prometheus模板扩展失败
+## ◆ Prometheus模板扩展失败
 **描述**  
 Prometheus模板文件扩展失败
 
@@ -244,7 +244,7 @@ Prometheus模板文件扩展失败
         description: "Prometheus template text expansion failed about {{ $value }} times within 5 minutes"
 ```   
 
-## 9. Prometheus规则组评估慢
+## ◆ Prometheus规则组评估慢
 **描述**  
 Prometheus规则组的评估持续时间比预定的时间长，它表示存储后端访问较慢或规则设计太复杂。
 
@@ -274,7 +274,7 @@ Prometheus规则组的评估持续时间比预定的时间长，它表示存储�
         description: "The evaluation time of rule group({{ $labels.rule_group }}) is too long,value {{ $value }}"
 ```   
 
-## 10. Prometheus拒绝异常样本
+## ◆ Prometheus拒绝异常样本
 **描述**  
 由于时间戳重复但是值不同的异常样本Prometheus拒绝。
 
@@ -303,7 +303,7 @@ Prometheus规则组的评估持续时间比预定的时间长，它表示存储�
         summary: Prometheus scrapes samples regected (Instance:{{ $labels.instance }})
         description: " The number of samples rejected is about {{ $value }} within 5 minutes"
 ```   
-## 11. PrometheusTsdb检查点创建失败
+## ◆ PrometheusTsdb检查点创建失败
 **描述**  
 Prometheus后端存储TSDB创建检查点失败
 
@@ -332,7 +332,7 @@ Prometheus后端存储TSDB创建检查点失败
         description: "Prometheus tsdb has {{ $value }} checkpoint creations failure within 5 minutes"
 ```   
 
-## 12. PrometheusTsdb检查点删除失败
+## ◆ PrometheusTsdb检查点删除失败
 **描述**  
 Prometheus后端存储TSDB删除检查点失败
 
@@ -361,7 +361,7 @@ Prometheus后端存储TSDB删除检查点失败
         description: "Prometheus tsdb has {{ $value }} checkpoint deletions failure within 5 minutes"
 ```   
 
-## 13. PrometheusTsdb数据压缩失败
+## ◆ PrometheusTsdb数据压缩失败
 **描述**  
 Prometheus后端存储TSDB数据压缩失败
 
@@ -390,7 +390,7 @@ Prometheus后端存储TSDB数据压缩失败
         description: "Prometheus tsdb has {{ $value }} compactions failure within 5 minutes"
 ```   
 
-## 14. PrometheusTsdb头部数据块删减失败
+## ◆ PrometheusTsdb头部数据块删减失败
 **描述**  
 Prometheus后端存储TSDB头部数据块删减失败
 
@@ -419,7 +419,7 @@ Prometheus后端存储TSDB头部数据块删减失败
         description: "Prometheus tsdb has {{ $value }} head truncations failure within 5 minutes"
 ```   
 
-## 15. PrometheusTsdb重载失败
+## ◆ PrometheusTsdb重载失败
 **描述**  
 Prometheus后端存储TSDB从磁盘重新加载数据失败
 
@@ -448,7 +448,7 @@ Prometheus后端存储TSDB从磁盘重新加载数据失败
         summary: Prometheus tsdb reloads  failed (Instance:{{ $labels.instance }})
         description: "Prometheus tsdb has {{ $value }} reloads failure within 5 minutes"
 ```   
-## 16. PrometheusTsdbWal删减失败
+## ◆ PrometheusTsdbWal删减失败
 **描述**  
 Prometheus后端存储TSDB写入数据WAL删减失败
 
@@ -476,7 +476,7 @@ Prometheus后端存储TSDB写入数据WAL删减失败
         summary: Prometheus tsdb wal truncations failed (Instance:{{ $labels.instance }})
         description: "Prometheus tsdb has {{ $value }} wal truncations failure within 5 minutes"
 ```   
-## 17. PrometheusTsdbWal损害
+## ◆ PrometheusTsdbWal损害
 **描述**  
 Prometheus后端存储TSDB的WAL损坏
 
@@ -505,7 +505,7 @@ Prometheus后端存储TSDB的WAL损坏
         description: "Prometheus tsdb has {{ $value }} wal corruptions within 5 minutes"
 ```  
 
-## 18. AlertManager配置文件重载失败
+## ◆ AlertManager配置文件重载失败
 **描述**  
 AlertManager的配置文件重新加载失败
 
