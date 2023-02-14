@@ -14,6 +14,7 @@ export const head: HeadConfig[] = [
   ['meta', { name: 'application-name', content: 'Prometheus alert rules' }],
   ['meta', { name: 'apple-mobile-web-app-title', content: 'Prometheus alert rules' }],
   ['meta', { name: 'apple-mobile-web-app-status-bar-style', content: 'black' }],
+  ['meta', { name: 'apple-mobile-web-app-status-bar-style', content: 'codeva-GlqEc5mRho' }],
   [
     'link',
     { rel: 'apple-touch-icon', href: `/images/icon.svg` },
